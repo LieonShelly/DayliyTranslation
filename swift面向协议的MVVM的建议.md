@@ -148,9 +148,109 @@ Its instantiation with the ViewModel will be super easy:
 
 	let myViewController = MyViewController.instantiate(with: MyViewModel())
 
+Let’s go further in ViewModel abstraction
+让我们更深入的探讨ViewModel
+
+In what we’ve done so far, we still have to instantiate the ViewModel and give it to the View. Wouldn’t it be nice to just instantiate the View and let it deal with the ViewModel instantiation in a generic way ? Swift type inference can help a lot in doing so.
+
+到目前为止我们所做的事情中，我们仍然需要实例化ViewModel并将其提供给View。 将实例化View并让它以通用方式处理ViewModel实例是不是很好？ Swift类型推断可以有效的帮助我们这样做。
+
+Before we dive into the code, I’d like to warn you that some may say this technic introduce a strong coupling between the View and the ViewModel. In a way this is true, but depending on the amount of time, energy, complexity allocated to your app,it can be an efficient strategy anyway.
+
+在我们深入了解代码之前，我想告诉你一些人可能会说这个技术在View和ViewModel之间引入了大量的耦合。 某种程度上这是事实，但取决于分配给应用程的时间，精力和复杂性，它无论如何都可能是一个有效的方案。
+
+First of all we will define WHAT is a ViewModel. Of course we will use a Protocol for that. And by doing so, we’ll introduce the notion of Services. Services are low level layers that are needed by the ViewModel to retrieve data or perform actions.
+首先，我们将定义什么是ViewModel。 当然我们会为此使用一个协议。 通过这样做，我们将介绍服务的概念。 服务是ViewModel检索数据或执行操作所需的低层次API。
+
+	protocol ViewModel {
+     associatedtype Services
+     init (withServices services: Services)
+	}
+
+We have to amend the ViewModelBased definition to introduce the ViewModel protocol in the associated type.
+	我们必须修改ViewModelBased定义来为引入相关类型的ViewModel协议
+	
+	protocol ViewModelBased: class {
+     associatedtype ViewModelType: ViewModel
+     var viewModel: ViewModelType { get set }
+	}
+
+Finally we can adapt the ViewModelBased extension like this:
+最后，我们可以像这样调整ViewModelBased扩展：
+
+	extension ViewModelBased where Self: StoryboardBased & UIViewController {
+
+    static func instantiate<ServicesT> (withServices services: ServicesT) -> Self
+
+    where ServicesT == Self.ViewModelType.Services {
+
+        let viewController = Self.instantiate()
+
+        viewController.viewModel = ViewModelType(withServices: services)
+
+        return viewController
+
+    }
+
+	}
+
+There are 2 main differences between this version and the previous one:
+
+这个版本和前一个版本有两个主要区别：
+
+the first difference is obvious: this static function not only instantiates the UIViewController but also the ViewModel. That’s one thing the developper won’t have to do anymore 👍
+
+第一个区别很明显：这个静态函数不仅实例化了UIViewController，而且实例化了ViewModel。 这是开发者不再需要做的一件事了
+
+the second difference is the function signature. It now takes some kind of Services as a parameter. As you can see, this is a generic function. The “where” statement forces the developper to pass a ServicesT that is the same as the one required in the ViewModelType. This brings safety and consistency 👍
+
+第二个区别是功能签名。 它现在需要某种服务作为参数。 正如你所看到的，这是一个通用功能。 “where”语句强制开发人员传递与ViewModelType中所需的ServicesT相同的ServicesT。 这带来了安全性和一致性👍s
+
+What is great here is that Swift will infer the ViewModelType according to the ViewModelBased implementation.
+
+这里最棒的是Swift将根据ViewModelBased实现来推断ViewModelType。
+
+Let’s see this in action.
+举个例子
+
+First thing first, we have to define a dumb Service for the sake of this demonstration:
+
+首先，我们必须为这个演示定义一个虚假的服务：
+
+	class MyService {
+
+    func executeService() {
+
+        print ("Service execution")
+
+    }
+	}
+
+We can now define a ViewModel that needs this Service:
+
+我们现在可以定义需要此服务的ViewModel：
+
+	struct MyViewModel: ViewModel {
+
+    typealias Services = MyService
+
+    init(withServices services: Services) {
+
+        services.executeService()
+
+      }
+    }
+
+
+MyViewController instantiation with its ViewModel becomes that easy (considering that we already have a MyService instance):
+
+使用ViewModel实现MyViewController实例变得非常简单（考虑到我们已经有了一个MyService实例）：
+
+	let myViewController = MyViewController.instantiate(withServices: myService)
+
+
 
 
 # 陌生单词
-		complementary 补充
-
+		complementary 补充  strong coupling 大量的耦合   amend 修改
 
