@@ -70,7 +70,7 @@ In fact the StoryboardBased protocol is pretty straight forward. Let’s dive in
 
 	public extension StoryboardBased {
 		static var storyboard: UIStoryboard {
-			      return UIStoryboard(name: String(describing: self), bundle: Bundle(for: self))  
+	    return UIStoryboard(name: String(describing: self), bundle: Bundle(for: self))  
 			}
 	  }
 	  
