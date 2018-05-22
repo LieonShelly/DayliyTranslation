@@ -70,7 +70,7 @@ In fact the StoryboardBased protocol is pretty straight forward. Let’s dive in
 
 	public extension StoryboardBased {
 		static var storyboard: UIStoryboard {
-			return UIStoryboard(name: String(describing: self), bundle: 			Bundle(for: self))  
+			      return UIStoryboard(name: String(describing: self), bundle: Bundle(for: self))  
 			}
 	  }
 	  
@@ -120,11 +120,11 @@ We can now mix it with StoryboardBased and provide a static function that instan
 
 	extension ViewModelBased where Self: StoryboardBased & UIViewController {
      static func instantiate (with viewModel: ViewModel) -> Self {
-        let viewController = Self.instantiate()
-        viewController.viewModel = viewModel
-        return viewController
-    }
-   }
+	        let viewController = Self.instantiate()
+	            viewController.viewModel = viewModel
+	           return viewController
+    		}
+		}
 
 Conditional extension is a very powerful tool. The “where” statement that combines “StoryboardBased” and “UIViewController” makes the Self.instantiate function available, so we just have to wrap this call in another static function that sets the UIViewController.viewModel property
 
