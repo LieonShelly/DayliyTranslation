@@ -1,3 +1,5 @@
+[原文](https://medium.com/@thibault.wittemberg/protocol-oriented-tips-for-mvvm-in-swift-5e34b6fc0eca)
+
 Protocol Oriented Tips for MVVM in Swift 
 
 swift面向协议的MVVM的建议
@@ -248,9 +250,152 @@ MyViewController instantiation with its ViewModel becomes that easy (considering
 
 	let myViewController = MyViewController.instantiate(withServices: myService)
 
+Protocol composition for Services
+
+Services的协议组合
+
+Although this seems pretty handy, there is one drawback to this pattern: what if a ViewModel needs several Services 
+
+虽然这看起来相当方便，但这种模式有一个缺点：如果ViewModel需要多个服务，该怎么办？
+
+One solution would be to pass some kind of container that provides ALL the services of your application. This would work, but not very safe because the ViewModel could use every services of the container without restriction.
+
+一种解决方案是通过container来提供应用程序的所有服务。 这会工作，但不是很安全，因为ViewModel可以不受限制地使用container的每个服务。
+
+I once read a post from Krzysztof Zablocki about this issue (here) and I though it would work very gently with my ViewModel approach.
+
+我曾经从Krzysztof Zablocki读过一篇关于这个问题的文章[这里](http://merowing.info/2017/04/using-protocol-compositon-for-dependency-injection/)，我认为它可以非常轻松地使用我的ViewModel方法。
+
+Let’s say our application needs 3 services:
+
+假设我们的应用程序需要3个服务：
+
+
+	class Service1 {
+
+    func executeService1() {
+
+        print ("execution of Service1")
+
+    }
+
+	}
+
+	class Service2 {
+
+    func executeService2() {
+
+        print ("execution of Service2")
+
+   	 }
+
+	}
+
+	class Service3 {
+
+    func executeService3() {
+
+        print ("execution of Service3")
+
+    }
+
+	}
+
+The idea is to use Protocol composition to express the services we need in our ViewModel. We will define a Protocol per Service that grants access to it:
+
+这个想法是使用协议组合来表达我们在ViewModel中需要的服务。 我们将为每个服务定义一个协议，以授予其访问权限：
+
+	protocol HasService1 {
+
+    	var service1: Service1 { get }
+
+	}
+
+
+
+	protocol HasService2 {
+
+    	var service2: Service2 { get }
+
+	}
+
+
+
+	protocol HasService3 {
+
+    	var service3: Service3 { get }
+
+	}
+
+In our ViewModels we now have the ability to clearly define our dependancies, with a fine granularity:
+
+在我们的ViewModels中，我们现在可以清晰地定义你的依赖关系，并具有精细的粒度：
+
+	struct MyViewModel: ViewModel {
+
+	// thanks to protocol composition we define 	only the services we want to use
+
+    typealias Services = HasService1 & HasService2
+
+    	init(withServices services: Services) {
+
+      	  services.service1.executeService1()
+
+      	  services.service2.executeService2()
+
+    	}
+
+	}
+
+
+
+struct MyOtherViewModel: ViewModel {
+
+    typealias Services = HasService2 & HasService3
+
+    init(withServices services: Services) {
+
+        services.service2.executeService2()
+
+        services.service3.executeService3()
+
+    }
+
+}
+
+The last step is to define the dependancy container:
+
+最后一步是定义依赖容器：
+
+	class MyServices: HasService1, HasService2, HasService3 {
+
+    	let service1 = Service1()
+
+     let service2 = Service2()
+
+     let service3 = Service3()
+	}
+
+And we’re good to go, we can now pass the container to our ViewModels with a decent safety but a great scalability. If we need to access another Service inside a ViewModel, we just have to update the protocol composition.
+
+大工告成了，现在我们可以通过容器将ViewModels传递给ViewModel，但是具有很好的可扩展性。 如果我们需要访问ViewModel中的另一个服务，我们只需要更新协议组合。
+
+At the end, UIViewController instantiation is the same (consider that MyViewController2 is a ViewModelBased VC):
+
+最后，UIViewController实例化是相同的（考虑MyViewController2是一个ViewModelBased VC）：
+
+	let myViewController = MyViewController.instantiate(withServices: myServices)
+
+	let myViewController2 = MyViewController2.instantiate(withServices: myServices)
+
+	// This is the same myServices instance for the 2 ViewControllers
+
+	// but each ViewModel will only access what's needed
 
 
 
 # 陌生单词
-		complementary 补充  strong coupling 大量的耦合   amend 修改
+		complementary 补充   strong coupling 大量的耦合 
+	   amend 修改 drawback缺点    granularity 粒度
+	   scalability 可扩展性
 
