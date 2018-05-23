@@ -6,11 +6,11 @@ swift面向协议的MVVM的建议
 
 Hi folks. Lately MVVM has become some sort of standard as an architecture for iOS apps. It offers a good separation of concerns, a good way to format data and great view binding mechanisms with frameworks such as RxSwift. In this post I will give few tips I use to ease the implementation of this pattern.
 
-大家好，最近MVVM设计模式已经成为了iosAPP架构的某一种标准。MVVM提供&lt;了一个很好的业务分隔，一个很好的格式数据，非常有效的视图绑定机制，比如Rxswift框架。在这篇文章中，我将分享一些关于我如何轻松地使用这种设计模式的一些建议
+大家好，最近MVVM设计模式已经成为了ios APP架构的某一种标准。MVVM提供了一个很好的业务分隔，一个很好的格式化数据，非常有效的视图绑定机制，比如Rxswift框架。在这篇文章中，我将分享一些关于我如何轻松地使用这种设计模式的一些建议
 
 Views made easy with Reusable 
 
-使用可复用的视图很容易
+使用Reusable框架，View的创建很容易
 
 With MVVM, separation between Views and the rest of your architecture is very clear. Views include UIViewControllers and their outlets. As a matter of fact, instantiating Views becomes more and more important, especially since patterns such as Coordinator gain in popularity. We will assume in the rest of this article that you are implementing this kind of architecture. 
 
