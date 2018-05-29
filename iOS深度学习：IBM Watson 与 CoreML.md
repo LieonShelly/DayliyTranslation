@@ -1,8 +1,9 @@
 [原文](https://medium.com/flawless-app-stories/detecting-avengers-superheroes-in-your-ios-app-with-ibm-watson-and-coreml-fe38e493a4d1)
 
 # Machine Learning in iOS: IBM Watson and CoreML
+Part 1
 
-# iOS深度学习：IBM Watson 与 CoreML
+# iOS深度学习：IBM Watson 与 CoreML(第一部分)
 
 Apple introduced CoreML in WWDC 2017, and it is a great deal. 
 CoreML is a machine learning framework used in many Apple products, like Siri, Camera, Keyboard Dictation, etc.
@@ -192,9 +193,146 @@ After training is complete, go to Implementation tab then select Core ML to 
 
 ## Using CoreML model in iOS app
 
-在iOS APP中使用CoreML模型
+## 在iOS APP中使用CoreML模型
 
+With the trained model from Watson, there are 2 ways to consume it in the app. The easy way is to use Watson SDK which wraps CoreML. The second way is to just use CoreML alone, and it is the approach we will show here, as it is simply to understand.
 
+app中，有两种方法来使用Watson训练好的模型。最简答的方式使用包含了CoreML的Watson SDK。第二种方法是单独的使用CoreML框架，这是我们将要展示的方法，它仅仅是简单的帮助我们去理解深度学习
+
+Just to let you know that this SDK exists, we won’t use any framework in this tutorial 😎.
+
+仅仅只是让你知道有这种SDK存在。在这边教程我们不使用任何的第三方框架
+
+	let classifierID = "your-classifier-id"
+
+	let failure = { (error: Error) in print(error) }
+
+	let image = UIImage(named: "your-image-filename")
+
+	visualRecognition.classifyWithLocalModel(image: image, classifierIDs: 			[classifierID], failure: failure) {
+
+					classifiedImages in print(classifiedImages)
+
+	}
+
+	let classifierID = "your-classifier-id"
+
+	let failure = { (error: Error) in print(error) }
+
+	visualRecognition.updateLocalModel(classifierID: classifierID, failure: failure) {
+
+    print("model updated")
+
+	}
+	
+## Use plain CoreML model
+
+## 使用的通用的 CoreML 模型
+
+In our guide, we just download the trained CoreML model and use it in our app. We learn the most when we don’t use any extra unnecessary frameworks. The project is on GitHub.
+
+在这篇教程中，我们仅仅下载了训练好的CoreML模型，在再app中使用它们。当我们不需要任何额外的框架，我们可以学到更多。这个工程的[GitHub链接](https://github.com/onmyway133/Avengers)
+
+### Running on the simulator
+
+在模拟器上运行
+
+The project uses UIImagePickerController with controller.sourceType = .camera so it’s great to build on device, take some pictures and predict. You can also run it on the simulator, just remember to point sourceType to photoLibrary because there’s no camera in the simulator 😅.
+
+项目中使用了UIImagePickerController的controller.sourceType =  .camera，所以是建立在真机设备上的，拍摄照片和预测是很棒的。你也可以在模拟器上运行，只需要记住将sourceType改为photoLibrary，因为模拟器上没有相机
+
+## Step 1: Add the model to project
+
+## 添加模型到项目中
+
+The model is what we use to make prediction. We just need to drag it to the project and add it to the app target. As reading from Integrating a Core ML Model into Your App we can just use the generated class AvengersModels.
+
+这个模型就是我们用来做预测的东西。 我们只需将其拖动到该项目并将其添加到应用程序目标中。 从阅读[Integrating a Core ML Model into Your App](https://developer.apple.com/documentation/coreml/integrating_a_core_ml_model_into_your_app)，我们可以使用生成的类AvengersModels。
+
+>>>Xcode also uses information about the model’s inputs and outputs to 
+>>>automatically generate a custom programmatic interface to the model, 
+>>>which you use to interact with the model in your code.
+
+>>>Xcode还使用有关模型输入和输出的信息来自动生成模型的自定义编程接口，您可以使用该模
+>>>型与代码中的模型进行交互。
+
+## Step 2: Vision
+
+## Vision
+According to wiki:
+
+以下是维基百科的关于Vision的解释
+
+>>>The Vision is a fictional superhero appearing in American comic 
+>>>books published by Marvel Comics, an android and a member of 
+>>>the Avengers who first appeared in The Avengers #57 (October 1968)
+
+>>>Vision是一个虚构的超级英雄，出现在漫威漫画出版的美国漫画书中，机器人和复仇者的成
+>>>员最初出现在复仇者联盟＃57（1968年10月）
+
+Just kidding 😅 Vision is a framework that works with CoreML “to apply classification models to images, and to preprocess those images to make machine learning tasks easier and more reliable”.
+
+开玩笑😅，Vision是一个可与CoreML协作的框架，“将分类模型应用于图像，并对这些图像进行预处理，使机器学习任务变得更加简单和可靠”。
+
+You should definitely watch WWDC 2017 video Vision Framework: Building on Core ML to get to know some other features of this framework, like detecting faces, computing facial landmarks, tracking objects, …
+
+您绝对应该观看WWDC 2017 WWDC 视频Vision Framework：基于Core ML构建，以了解此框架的其他功能，例如检测面部，计算面部标志，跟踪对象...
+
+With the generated AvengersModels().model we can construct Vision compatible model VNCoreMLModel and request VNCoreMLRequest, then finally send the request to VNImageRequestHandler. The code is very straightforward:
+
+使用生成的AvengersModels().model，我们可以构建Vision兼容模型VNCoreMLModel并请求VNCoreMLRequest，然后将请求发送到VNImageRequestHandler。 代码非常简单：
+
+	private func detect(image: UIImage) throws {
+
+			loadingIndicator.startAnimating()
+			
+			let model = try VNCoreMLModel(for: AvengersModels().model)
+
+			let request = VNCoreMLRequest(model: model, completionHandler: { [weak self] request, error in
+
+		 guard let results = request.results as? [VNClassificationObservation],
+
+      let topResult = results.first else {
+
+      print(error as Any)
+
+      return
+
+    }
+
+    DispatchQueue.main.async {
+
+      self?.resultLabel.text = topResult.identifier + "(confidence \(topResult.confidence * 100)%)"
+
+      self?.loadingIndicator.stopAnimating()
+
+    }
+    
+	})
+
+	 let handler = VNImageRequestHandler(cgImage: image.cgImage!, options: [:])
+
+	DispatchQueue.global(qos: .userInteractive).async {
+
+    do {
+
+      try handler.perform([request])
+
+    } catch {
+
+      print(error)
+
+	 	}
+	 }
+	}
+
+The prediction operation may take time, so it’s good habit to send it to background queue, and to update UI when we get the result.
+
+预测的操作可能会消耗一些时间，所以将这种耗时操作放在后台队列中是个好习惯，当得到预测的结果后更新UI
+
+Build and run the app. If you build it on an iPhone, take a picture of a superhero, if that is one of the 4 superheroes we have trained in this tutorial, then CoreML will be able to predict who he is based on the trained .mlmodel
+
+编译并运行App，如果是运行在iPhone上，拍一张超级英雄的照片，如果是拍的照片是我们教程中所训练的4个超级英雄中的某一个，那么CoreML将会基于训练好的.mlmodel文件进行预测
 
 # 陌生单词
 
