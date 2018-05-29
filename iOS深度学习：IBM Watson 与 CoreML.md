@@ -110,14 +110,94 @@ For me, after creating new project, it goes to the page Default Custom Modeland
 
 Go back to the front page, select your Avengers project from Projects menu, and go to Settings tab.
 
-回到前端页面，从工程菜单中选择你复仇者项目，然后进入设置页面
+回到之前的前端页面，从工程菜单中选择你复仇者项目，然后进入设置页面
+
+Scroll down to Associated services section and click Watson. In the next screen we can see there are lots of services for many purposes: Text to Speech, Speech to Text, Language Translator, Tone Analyzer, etc. In our case, we need Visual Recognition service. For Lite plan, we can have only 1 instance of each service, if you try to add more, you will get the following warning.
+
+向下滚动到联合服务区并点击Watson选项。下一屏我们看到很多用于多种用途的服务，文本语言，语言文本，语言翻译器，音频分析器。在我们的案例中，我需要视觉识别服务。对于Lite计划，每个服务只能有1个实例。如果你尝试添加更多，则会收到以下警告：
+
+>>>Service broker error: You can only have one instance of a Lite plan 
+>>>per service. To create a new instance, either delete your existing 
+>>>Lite plan instance or select a paid plan.
 
 
+The association between Watson projects, tools and services is confusing, probably because there are tons of features we haven’t used yet. Think of project as a bag of tool and service. We can only use 1 instance of each service for Lite plan, and tool is the front end we use to interact with the service.
+
+Watson projects 工具和服务之前的关联是很混乱，肯能是因为我们还没有使用过很多功能。将项目看做一个工具包和服务。我们只能为Lite计划使用每个服务的1个实例，而工具是我们用来与服务交互的前端。
+
+## Step 4: Remove existing service if any
+
+## 移除现有的服务（如有）
+
+To delete existing service, go back to home page, select Watson Services from Services menu. Here we can launch the tool for this service or delete it.
+
+要删除现有服务，请返回主页，从Services菜单中选择Watson Services。 在这里，我们可以启动此服务的工具或将其删除。
+
+After deleting existing service, go back to step 3 to configure new instance for service Visual Recognition for this project Avengers.
+
+删除现有的服务。返回到第三步为项目Avengers的视觉识别服务配置一个新的实例
+
+## Step 5: Create Visual recognition models
+
+## 创建视觉识别模型
+
+Go to your Avengers project, click Assets tab and head over to section Visual recognition models. For the fun part of this tutorial, I will name our custom model Avengers Models 🤘.
+
+转到您的复仇者项目，点击Assets标签并转到部分视觉识别模型。 对于本教程的有趣部分，我将命名我们的自定义模型复仇者模型🤘。
+
+We can create class for each hero, or upload a zip file containing images for each hero. Note that the name of the zip file corresponds to the name of the class. The negative class is for images that do not fall into any expected classes. For this tutorial we will deal with Iron Man, Spider-Man, Captain America and Thor, because they are my favourites 😅.
+
+我们可以为每一个英雄创建一个类，或者上去一个包含每个英雄的图片zip文件。注意，每个zip文件的命名必须和创建的类的名字相对应。否定类是针对不属于任何预期类别的图像
+
+The more images we upload, the more correct the model is. Also, you should use more variations of the characters, in different angles, lights. Note that we should put correct images in each folder, because garbage in is garbage out
+
+我们上传的图片越多，模型越正确。 此外，您应该以不同的角度亮，不同的光线角度，使用同一个英雄。 请注意，我们应该在每个文件夹中放置正确的图像，因为垃圾进入垃圾了
+
+Select the button Find and add images on the top right to add images.
+
+选择右上角的查找和添加图像以添加图像。
+
+## Step 6: Data set
+
+## 数据集
+
+We can download some free images from Google to use as our data set. You can get the data set on my GitHub repo, or you can prepare the data set yourself. Downloading images manually is not fun, let’s use a script. I don’t know of any good tools, but a search from Google shows this tool google-images-download. We’re lazy, let’s save time.
+
+我们可以从谷歌下载一些免费的图像作为我们的数据集。 您可以在我的GitHub仓库中获取数据集，也可以自己准备数据集。 手动下载图像并不好玩，让我们使用脚本。 我不知道任何好的工具，但Google的搜索oogle-images-download显示这个工具谷歌图片下载。 我们很懒，让我们节省时间。
+
+50 images for each hero should be good in this post. Let’s zip them and upload to Watson. After uploading finishes, add those assets to model.
+
+这边文章中，每个英雄50张图片应该可以达到很好的效果。让我们压缩这些图片并上传到Watson。上传完成之后。添加这些图片资源到模型中。
+
+## Step 7: Train the model
+
+## 训练模型
+
+This step requires all your remaining power to click that Train Model to start the training process. This takes some times depending on your dataset. For our dataset in this tutorial, it should take less than 10 minutes.
+
+这一步将需要你全力点击训练模型来开始训练的过程。这个过程所消耗的时间依赖于你的数据集。在这个教程的数据集，训练过程应该小于10分钟
+
+The reason it takes that short amount of time is because of our very small dataset. The other reason I think is because Visual Recognition uses a technique called transfer learning
+
+训练模型的过程花费的时间很短是一方面是因为数据集很小，另一方面我认为是Visual Recognition 使用了一种叫做transfer learning的技术。
+
+>>>Today, you can use “transfer learning” — i.e., use an existing image 
+>>>recognition model and retrain it with your own dataset.
+
+>>> 现在，你可以使用“transfer learning”技术---即使用现有的图像识别模型，并使用您自己的数据集重新训练。
+
+After training is complete, go to Implementation tab then select Core ML to download the CoreML compatible model. The file is 13MB.
+
+训练完这些模型之后，页面转到Implementation菜单，然后选择Core ML 选项去下载兼容CoreML的模型，文件大小有13MB
+
+## Using CoreML model in iOS app
+
+在iOS APP中使用CoreML模型
 
 
 
 # 陌生单词
 
 	dominant 主要，主导 predicting 预测 consume 消耗 使用
-	straightforward 直截了当 one-stop 一站式 seamlessly
+	straightforward 直截了当 one-stop 一站式 seamlessly 无缝的
 
