@@ -86,7 +86,11 @@ Like many other machine learning frameworks, Turi Create is written in Python an
 
 According to[system requirements](https://github.com/apple/turicreate#system-requirements), Python 2.7, 3.5, 3.6 are supported, this is confirmed in this[issue](https://github.com/apple/turicreate/issues/514)as from Turi Create 4.1. I’m using a MacBook with macOS High Sierra so I have Python 2.7 by default. Although there’s movement for[Python 3](https://wiki.python.org/moin/Python2orPython3), let’s use the system Python 2.7 for now.
 
-You can check Python version and its executable by running the following commands in terminal:``
+根据系统要求，支持Python 2.7,3.5,3.6，这在Turi Create 4.1中得到了证实。 我正在使用MacOS高级Sierra的MacBook，所以我默认使用Python 2.7。 虽然Python 3有所变化，但现在让我们使用Python 2.7系统。
+
+You can check Python version and its executable by running the following commands in terminal:
+
+您可以通过在终端中运行以下命令来检查Python版本及其可执行文件
 
 ```
 > python - version 
@@ -95,4 +99,24 @@ You can check Python version and its executable by running the following command
   /usr/local/bin/python 
 ```
 
-If for some reasons you don’t have Python installed, you can install it[here](https://www.python.org/downloads/release/python-2714/). Python comes with`pip`, which is a package management system used to install and manage software packages written in Python. We need pip to install[turicreate](https://pypi.org/project/turicreate/), run the following command:
+If for some reasons you don’t have Python installed, you can install it[here](https://www.python.org/downloads/release/python-2714/). Python comes with`pip`, which is a package management system used to install and manage software packages written in Python. We need pip to install [turicreate](https://pypi.org/project/turicreate/), run the following command:
+
+如果由于某些原因你没有安装Python，可以在这里安装它。 Python附带pip，这是一个用于安装和管理用Python编写的软件包的软件包管理系统。 我们需要pip来安装turicreate，运行以下命令：
+
+```
+pip install turicreate
+```
+
+Turi Create recommends using [virtualenv](https://virtualenv.pypa.io/en/stable/)or [Anaconda](https://www.anaconda.com/what-is-anaconda/) to create isolated Python environment. You are free to create virtual environment, but in this post we just merely execute Python scripts for simplicity.
+
+Turi Create建议使用virtualenv或Anaconda创建独立的Python环境。 您可以自由创建虚拟环境，但在本文中，我们只是简单地执行Python脚本。
+
+#### Step 2: Data set
+
+#### 数据集
+
+We use the same data set from [Machine Learning in iOS: IBM Watson and CoreML](https://medium.com/flawless-app-stories/detecting-avengers-superheroes-in-your-ios-app-with-ibm-watson-and-coreml-fe38e493a4d1)post. You can collect your own dataset or use ones in this GitHub[repo](https://github.com/onmyway133/Avengers). Eventually, we train with images of 4 superheroes: Ironman, Captain America, Spiderman and Thor. Images for each superhero lie in their own folder, the name of the folder can be seen as a label or a tag.
+
+
+
+我们使用来自 [Machine Learning in iOS: IBM Watson and CoreML](https://medium.com/flawless-app-stories/detecting-avengers-superheroes-in-your-ios-app-with-ibm-watson-and-coreml-fe38e493a4d1)相同的数据集。 你可以收集你自己的数据集或者使用这个GitHub仓库中的数据集。 最终，我们训练了4名超级英雄的照片：钢铁侠，美国队长，蜘蛛侠和托尔。 每个超级英雄的图像位于他们自己的文件夹中，文件夹的名称可以被看作标签。
