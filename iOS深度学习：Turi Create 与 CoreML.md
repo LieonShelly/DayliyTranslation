@@ -88,11 +88,12 @@ According to[system requirements](https://github.com/apple/turicreate#system-req
 
 You can check Python version and its executable by running the following commands in terminal:
 
-      ** python - version |
-|  | Python 2.7.13 |**
+    python - version 
 
-**       > which python **
+    Python 2.7.13 
 
-**        /usr/local/bin/python **
+    which python 
+
+     /usr/local/bin/python 
 
 If for some reasons you don’t have Python installed, you can install it[here](https://www.python.org/downloads/release/python-2714/). Python comes with`pip`, which is a package management system used to install and manage software packages written in Python. We need pip to install[turicreate](https://pypi.org/project/turicreate/), run the following command:
