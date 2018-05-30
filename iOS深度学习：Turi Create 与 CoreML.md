@@ -86,14 +86,13 @@ Like many other machine learning frameworks, Turi Create is written in Python an
 
 According to[system requirements](https://github.com/apple/turicreate#system-requirements), Python 2.7, 3.5, 3.6 are supported, this is confirmed in this[issue](https://github.com/apple/turicreate/issues/514)as from Turi Create 4.1. I’m using a MacBook with macOS High Sierra so I have Python 2.7 by default. Although there’s movement for[Python 3](https://wiki.python.org/moin/Python2orPython3), let’s use the system Python 2.7 for now.
 
-You can check Python version and its executable by running the following commands in terminal:
+You can check Python version and its executable by running the following commands in terminal:``
 
-    python - version 
-
-    Python 2.7.13 
-
-    which python 
-
-     /usr/local/bin/python 
+```
+> python - version 
+  Python 2.7.13 
+> which python 
+  /usr/local/bin/python 
+```
 
 If for some reasons you don’t have Python installed, you can install it[here](https://www.python.org/downloads/release/python-2714/). Python comes with`pip`, which is a package management system used to install and manage software packages written in Python. We need pip to install[turicreate](https://pypi.org/project/turicreate/), run the following command:
