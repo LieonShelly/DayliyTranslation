@@ -2,7 +2,7 @@
 
 ## Machine Learning in iOS: Turi Create and CoreML
 
-## iOS深度学习：Turi Create 与 CoreML
+## iOS机械学习：Turi Create 与 CoreML
 
 [Machine learning](https://developer.apple.com/machine-learning/)on iOS became trendy when Apple introduced CoreML at WWDC 2017. It can be intimidating at first with all the new concepts, frameworks and models, so we started with cloud services to learn basic machine learning, dataset preparation and training in[IBM Watson and CoreML](https://medium.com/flawless-app-stories/detecting-avengers-superheroes-in-your-ios-app-with-ibm-watson-and-coreml-fe38e493a4d1)(Part 1) and[Azure Custom Vision and CoreML](https://medium.com/p/645e93f35eee/edit)(Part2).
 
@@ -115,8 +115,8 @@ Turi Create建议使用virtualenv或Anaconda创建独立的Python环境。 您�
 
 #### 数据集
 
-We use the same data set from [Machine Learning in iOS: IBM Watson and CoreML](https://medium.com/flawless-app-stories/detecting-avengers-superheroes-in-your-ios-app-with-ibm-watson-and-coreml-fe38e493a4d1)post. You can collect your own dataset or use ones in this GitHub[repo](https://github.com/onmyway133/Avengers). Eventually, we train with images of 4 superheroes: Ironman, Captain America, Spiderman and Thor. Images for each superhero lie in their own folder, the name of the folder can be seen as a label or a tag.
-
-
+We use the same data set from [Machine Learning in iOS: IBM Watson and CoreML](https://medium.com/flawless-app-stories/detecting-avengers-superheroes-in-your-ios-app-with-ibm-watson-and-coreml-fe38e493a4d1)post. You can collect your own dataset or use ones in this GitHub[repo](https://github.com/onmyway133/Avengers). Eventually, we train with images of 4 superheroes: Ironman, Captain America, Spiderman and Thor. Images for each superhero lie in their own folder, the name of the folder can be seen as a label or a tag
 
 我们使用来自 [Machine Learning in iOS: IBM Watson and CoreML](https://medium.com/flawless-app-stories/detecting-avengers-superheroes-in-your-ios-app-with-ibm-watson-and-coreml-fe38e493a4d1)相同的数据集。 你可以收集你自己的数据集或者使用这个GitHub仓库中的数据集。 最终，我们训练了4名超级英雄的照片：钢铁侠，美国队长，蜘蛛侠和托尔。 每个超级英雄的图像位于他们自己的文件夹中，文件夹的名称可以被看作标签。
+
+

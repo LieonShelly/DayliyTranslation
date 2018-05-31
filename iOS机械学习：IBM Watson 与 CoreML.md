@@ -3,7 +3,7 @@
 # Machine Learning in iOS: IBM Watson and CoreML
 Part 1
 
-# iOS深度学习：IBM Watson 与 CoreML(第一部分)
+# iOS机械学习：IBM Watson 与 CoreML(第一部分)
 
 Apple introduced CoreML in WWDC 2017, and it is a great deal. 
 CoreML is a machine learning framework used in many Apple products, like Siri, Camera, Keyboard Dictation, etc.
