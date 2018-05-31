@@ -228,4 +228,4 @@ In #3 we create a classifier model based on the train data, with`hero_name`as th
 
 The`predict`method in #4 is for demonstration purpose only. It performs[prediction](https://github.com/apple/turicreate/blob/90200c47353c0fb506b42c85eb4be5234c76dfb8/src/unity/python/turicreate/toolkits/image_classifier/image_classifier.py#L257)for our test data and returns an`SArray`object with the labels for each image in test data. Something like below, you can`print`and check it against your test data.
 
-
+注释4： `predict`方法仅仅是为演示。为我们的测试数据执行了预测，并且返回了`SArray`对象，这个对象是测试数据中每张图片的标签名。像下面这些，你可以打印并检查你的测试数据。
