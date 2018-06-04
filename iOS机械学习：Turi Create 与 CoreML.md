@@ -115,13 +115,11 @@ We use the same data set from [Machine Learning in iOS: IBM Watson and CoreML](h
 
 我们使用来自 [Machine Learning in iOS: IBM Watson and CoreML](https://medium.com/flawless-app-stories/detecting-avengers-superheroes-in-your-ios-app-with-ibm-watson-and-coreml-fe38e493a4d1)相同的数据集。 你可以收集你自己的数据集或者使用这个GitHub仓库中的数据集。 最终，我们训练了4名超级英雄的照片：钢铁侠，美国队长，蜘蛛侠和托尔。 每个超级英雄的图像位于他们自己的文件夹中，文件夹的名称可以被看作标签。
 
-
-
 #### Step 3: Load data and explore
 
 #### 加载分析数据
 
-In the same directory of` dataset` , create a file called `turi.python `and type the following. You can use editors like[ PyCharm](https://www.jetbrains.com/pycharm/) to easily edit your Python code. Type the following:
+In the same directory of` dataset` , create a file called `turi.python `and type the following. You can use editors like[ PyCharm](https://www.jetbrains.com/pycharm/) to easily edit your Python code. Type the following:
 
 在dataset的同一个文件夹中，创建一个`turi.python `文件，并输入以下的代码。你可以使用Pycharm来很轻松的编写你的Python代码。
 
@@ -142,7 +140,7 @@ data.save('turi.sframe')
 data.explore()
 ```
 
-Firstly, we need to impor t`turicreate `as `tc` . The`import `[statement](https://docs.python.org/2.0/ref/import.html) with`as`is to define`tc`as a local namespace in this file for the`turicreate`module.
+Firstly, we need to impor t`turicreate `as `tc` . The`import `[statement](https://docs.python.org/2.0/ref/import.html) with`as`is to define`tc`as a local namespace in this file for the`turicreate`module.
 
 首先，我们需要引入`turicreate`并命名一个别名为tc。在这个文件中，import语句将使用as把为`turicreate`模块定义为tc作为一个本地的命名空间
 
@@ -150,25 +148,25 @@ In #1 As we said earlier, Turi Create has many modules for working with differen
 
 注释1：正如上文所说的，Turi Create针对不同类型的任务有许多不同的模块。比如`tc.object_detector, tc.sentence_classifier, tc.recommender, ...`等等。但是在这里由于我们是用作图片分类，所以需要使用`tc.image_analysis`
 
-The [load_images](https://github.com/apple/turicreate/blob/afa1f9034bbcec2f829485644a10177be16f1dbd/src/unity/python/turicreate/toolkits/image_analysis/image_analysis.py#L12) is used to loads images from a directory. JPEG and PNG images are supported. The`with_path`parameter is to indicates whether a path column is added to the`SFrame`. If` with_path`is set to`True`, the returned`SFrame`contains a`path`column, which holds a path string for each image object. As of this line, the data object contains a table with many records for each image, with 2 columns: the loaded image data and a`path`.
+The [load_images](https://github.com/apple/turicreate/blob/afa1f9034bbcec2f829485644a10177be16f1dbd/src/unity/python/turicreate/toolkits/image_analysis/image_analysis.py#L12) is used to loads images from a directory. JPEG and PNG images are supported. The`with_path`parameter is to indicates whether a path column is added to the`SFrame`. If` with_path`is set to`True`, the returned`SFrame`contains a`path`column, which holds a path string for each image object. As of this line, the data object contains a table with many records for each image, with 2 columns: the loaded image data and a`path`.
 
-[load_images](https://github.com/apple/turicreate/blob/afa1f9034bbcec2f829485644a10177be16f1dbd/src/unity/python/turicreate/toolkits/image_analysis/image_analysis.py#L12) 方法是用于加载文件中的图片，支持的图片格式JPEGhePNG。`with_path`参数是用于指定路径是否被添加到 `SFrame` 中。如果with_path设置为True，返回值SFrame中包含有`path`的值，该值为每一个图片对象保存了一个路径字符串。就这一行代码而言，数据对象包含了一个表格，每个图像都有许多的记录，，该表格有两个字段：加载的图像和路径
+[load_images](https://github.com/apple/turicreate/blob/afa1f9034bbcec2f829485644a10177be16f1dbd/src/unity/python/turicreate/toolkits/image_analysis/image_analysis.py#L12) 方法是用于加载文件中的图片，支持的图片格式JPEGhePNG。`with_path`参数是用于指定路径是否被添加到 `SFrame` 中。如果with_path设置为True，返回值SFrame中包含有`path`的值，该值为每一个图片对象保存了一个路径字符串。就这一行代码而言，数据对象包含了一个表格，每个图像都有许多的记录，，该表格有两个字段：加载的图像和路径
 
-In #2, we already have images as our features/input variable, but we need a class/label to classify. Here we use[ os  module](https://docs.python.org/3/library/os.html)to get the folder name, as the name of each folder is the class name. For example, the`path`might be`/Users/khoa/XcodeProject2/Avengers/dataset/captain_america/steve-roger-america.jpg`, but the`hero_name`should be mapped to`captain_america.`
+In #2, we already have images as our features/input variable, but we need a class/label to classify. Here we use[ os  module](https://docs.python.org/3/library/os.html)to get the folder name, as the name of each folder is the class name. For example, the`path`might be`/Users/khoa/XcodeProject2/Avengers/dataset/captain_america/steve-roger-america.jpg`, but the`hero_name`should be mapped to`captain_america.`
 
 注释2：虽然我们已经有图片作为特征/输出变量，但是我们需要一个类来归类表示他们。这里我们使用 os 模块去获取文件夹的名称，用每一个文件夹的名称作为类名。比如：路径可能是`/Users/khoa/XcodeProject2/Avengers/dataset/captain_america/steve-roger-america.jpg`，那么`hero_name`应该会被映射为`captain_america`
 
-The [apply](https://github.com/apple/turicreate/blob/master/src/unity/python/turicreate/data_structures/sframe.py#L2388) function is used with a [lambda ](https://docs.python.org/3/tutorial/controlflow.html#lambda-expressions)to create another column called`hero_name`based on the`path`, it means that each record has a new property called`hero_name.`
+The [apply](https://github.com/apple/turicreate/blob/master/src/unity/python/turicreate/data_structures/sframe.py#L2388) function is used with a [lambda ](https://docs.python.org/3/tutorial/controlflow.html#lambda-expressions)to create another column called`hero_name`based on the`path`, it means that each record has a new property called`hero_name.`
 
-根据`path`参数，[apply](https://github.com/apple/turicreate/blob/master/src/unity/python/turicreate/data_structures/sframe.py#L2388) 函数和 [lambda](https://docs.python.org/3/tutorial/controlflow.html#lambda-expressions)表达式一起使用创建另一个名为`hero_name`的列。这意味着每条记录将会有一个名为`hero_name`的属性了。
+根据`path`参数，[apply](https://github.com/apple/turicreate/blob/master/src/unity/python/turicreate/data_structures/sframe.py#L2388) 函数和 [lambda](https://docs.python.org/3/tutorial/controlflow.html#lambda-expressions)表达式一起使用创建另一个名为`hero_name`的列。这意味着每条记录将会有一个名为`hero_name`的属性了。
 
-In #3 We save our data as  .SFrame [object](https://apple.github.io/turicreate/docs/api/generated/turicreate.SFrame.html), which is a data structured known by Turi Create. SFrame has a[tabular data structure ](https://apple.github.io/turicreate/docs/userguide/sframe/tabular-data.html)that knows how to load from many common file formats like CSV and has many handy[data manipulation ](https://apple.github.io/turicreate/docs/userguide/sframe/data-manipulation.html)methods. You can read more about it in[ Logical Filter](https://apple.github.io/turicreate/docs/api/generated/turicreate.SFrame.html) section.
+In #3 We save our data as  .SFrame [object](https://apple.github.io/turicreate/docs/api/generated/turicreate.SFrame.html), which is a data structured known by Turi Create. SFrame has a[tabular data structure ](https://apple.github.io/turicreate/docs/userguide/sframe/tabular-data.html)that knows how to load from many common file formats like CSV and has many handy[data manipulation ](https://apple.github.io/turicreate/docs/userguide/sframe/data-manipulation.html)methods. You can read more about it in[ Logical Filter](https://apple.github.io/turicreate/docs/api/generated/turicreate.SFrame.html) section.
 
 注释3：我们将数据保存为.SFrame对象，这是Turi Create已知的数据结构。 SFrame有一个表格数据结构，知道如何从CSV等许多常见文件格式加载，并有许多方便的数据操作方法。 您可以在逻辑过滤器部分阅读更多关于它的信息。
 
 Turi Create is kind enough to provide with a macOS app that shows our`data`object in a user-friendly interface, so in #4 all we need is to call`explore.`
 
-Turi Create 提供了一个非常友好的macOS app，可以在用户友好的界面中显示我们的数据对象。一次在注释4中我们需要调用`explore` 方法
+Turi Create 提供了一个非常友好的macOS app，可以在用户友好的界面中显示我们的数据对象。一次在注释4中我们需要调用`explore` 方法
 
 So go to terminal to execute our script:
 
@@ -181,8 +179,6 @@ python turi.python
 After a short while with some “Unsupported image format” (Don’t worry, it’s because of some malformed images that I downloaded from Google), you will get a saved`turi.sframe`folder on disk and the app Turi Create Visualization appears. Here you can see we have a table with many records and 3 columns`path`,`image`and`hero_name`
 
 经过一段时间之后，出现了一些 “不支持的图像格式”（别担心，这是因为我从Google下载了一些格式不正确的图片。你将会得到一个保存在磁盘上的`turi.sframe`文件夹并且Turi Create Visualization app将会出现。这里你将会看到有许多记录的表格，有3列，分别是`path`,`image`和`hero_name`
-
-
 
 #### Step 4: Train
 
@@ -228,4 +224,97 @@ In #3 we create a classifier model based on the train data, with`hero_name`as th
 
 The`predict`method in #4 is for demonstration purpose only. It performs[prediction](https://github.com/apple/turicreate/blob/90200c47353c0fb506b42c85eb4be5234c76dfb8/src/unity/python/turicreate/toolkits/image_classifier/image_classifier.py#L257)for our test data and returns an`SArray`object with the labels for each image in test data. Something like below, you can`print`and check it against your test data.
 
-注释4： `predict`方法仅仅是为演示。为我们的测试数据执行了预测，并且返回了`SArray`对象，这个对象是测试数据中每张图片的标签名。像下面这些，你可以打印并检查你的测试数据。
+注释4： `predict`方法仅仅是为演示。为我们的测试数据执行了预测，并且返回了`SArray`对象，这个对象是测试数据中每张图片的标签名。像下面这些，你可以打印并检查你的测试数据。
+
+```
+[‘captain_america’, ‘thor’, ‘captain_america’, ...]
+```
+
+The`evaluate`method in #5 is very handy, as it[evaluates](https://github.com/apple/turicreate/blob/90200c47353c0fb506b42c85eb4be5234c76dfb8/src/unity/python/turicreate/toolkits/image_classifier/image_classifier.py#L427)the model by making predictions of target values and comparing these to actual values. The returned value is a dictionary of evaluation results where the key is the name of the evaluation metric (e.g. \`accuracy\`) and the value is the evaluation score. Here we usually get`accuracy`between`0.75`to`0.9` , not very bad for our humble dataset.
+
+注释5：`evaluate` 方法非常的方便，因为它预测目标值并将这些值与实际的值比较来进行评估模型。其返回的值是评估结果的字典，其中关键字是评估度量的名称（例如：精确度），其值是评估的分数。通常我们得到的精确度在0.75和0.9之前，对于我们现在这种小型数据集来说并不是很糟糕。
+
+Lastly in #6 and #7, we save the trained model as Turi compatible`turi.model`for future use and export to CoreML model. We will soon use this CoreML model in our iOS app.
+
+在最后的注释6和注释7中，我们将训练好的模型保存为与Turi兼容的`turi.model`以供接下来的使用和导出CoreML模型。我们将很快在iOS App中使用导出的CoreML模型。
+
+Run python`turi_train.python`to execute our script. After a short while, you will get a`turi.model`folder and also a file`TuriCreate.mlmodel` .
+
+执行python `turi_train.python`命令来运行脚本。一小会儿之后，将会得到一个`turi.model`的文件及爱，并且该文件夹包含一个`TuriCreate.mlmodel` 文件
+
+But wait, the exported `.mlmodel`is around 94, 2 Mb !! It is a bit heavy for an iOS app, let’s find a way to reduce the size.
+
+但是等等，导出的 mlmodel文件大约在94Mb左右，对于一个iOSAPP来说是非常大的了。让我们找一个方法去减少它的大小
+
+### Advanced parameters
+
+### 一些高级的参数
+
+#### Dig into the source code
+
+#### 深入了解源码
+
+Turi Create exposes high level APIs with some default parameters. In case you want to tweak parameters to your needs, read the official[documentation](https://apple.github.io/turicreate/docs/api/index.html), or better, consult the[source code](https://github.com/apple/turicreate/tree/master/src/unity/python/turicreate). Here are some links to very important files for image classification
+
+- [image_classifier.py](https://github.com/apple/turicreate/blob/90200c47353c0fb506b42c85eb4be5234c76dfb8/src/unity/python/turicreate/toolkits/image_classifier/image_classifier.py#L427): Class definition and utilities for the image classification toolkit. Contains methods`create`,`evaluate`,`predict`,`classify`
+
+- [image_analysis.py](https://github.com/apple/turicreate/blob/master/src/unity/python/turicreate/toolkits/image_analysis/image_analysis.py): Contains useful methods`load_images`,`resize`for images loading and customisation
+
+- [sframe.py](https://github.com/apple/turicreate/blob/master/src/unity/python/turicreate/data_structures/sframe.py): This module defines the SFrame class which provides the  
+ability to create, access and manipulate a remote scalable dataframe object. It has handy methods`load_sframe` ,`explore`to load saved `.sframe`and to explore SFrame data structure in a GUI app.
+
+  
+
+
+
+Turi Create对外部提供了一些默认参数的API。如果你想调整参数以满足你的需求，请阅读官方文档或更好地查阅源代码，下面是一些对图像分类非常重要的文件的链接
+
+
+
+
+- [image_classifier.py](https://github.com/apple/turicreate/blob/90200c47353c0fb506b42c85eb4be5234c76dfb8/src/unity/python/turicreate/toolkits/image_classifier/image_classifier.py#L427): 图像分类工具包的类定义和工具，包含的方法有`create`,`evaluate`,`predict`,`classify`
+
+- [image_analysis.py](https://github.com/apple/turicreate/blob/master/src/unity/python/turicreate/toolkits/image_analysis/image_analysis.py): 对加载和自定义图像有用的方法有`load_images`,`resize`。
+
+- [sframe.py](https://github.com/apple/turicreate/blob/master/src/unity/python/turicreate/data_structures/sframe.py): 该模块定义了SFrame类，该类提供了创建，访问和操作远程可伸缩数据框对象。提供很多便捷的方法，`load_sframe` ,`explore`去加载`.sframe`文件，并在GUI应用程序中探索SFrame数据结构
+
+#### Transfer learning
+
+#### 转移学习
+
+Normally the training process takes a lot of time, but Turi Create manages to do it fast. Take a closer look at the console output when you run`turi_train.python:`
+
+通常地训练模型的流程消耗了大量的时间，但是Turi Create却很快。当你运行turi_train.python文件时，仔细看看控制台的输出
+
+```
+Downloading https://docs-assets.developer.apple.com/turicreate/models/resnet-50-symbol.json
+Download completed: /var/tmp/model_cache/resnet-50-symbol.json
+Downloading https://docs-assets.developer.apple.com/turicreate/models/resnet-50-0000.params
+Download completed: /var/tmp/model_cache/resnet-50–0000.params
+```
+
+It downloaded some Resnet files. May you wonder? The reason is that it uses a technique called[Transfer learning](https://en.wikipedia.org/wiki/Transfer_learning), read more about the tech details[here](https://apple.github.io/turicreate/docs/userguide/image_classifier/how-it-works.html).
+
+它下载了一些Resnet文件。你想知道吗？原因是因为它使用一种叫做Transfer transfer的的技术，在这里阅读更多关于该项技术的细节内容。
+
+
+
+> **Learning high-level concepts about data** means that deep learning models take data, for instance raw pixel values of an image, and learns abstract ideas like ‘is animal’ or ‘is cat’ about that data
+> 
+> 
+> 
+> Conceptually, all this means is that you have a composition of simple non-linear functions, forming a complex non-linear function, which can map things as complex as raw pixel values to image category. This is what allows deep learning models to attain such amazing results.
+> 
+> It’s not uncommon for the task you want to solve to be related to something that has already been solved. Take, for example, the task of distinguishing cats from dogs. The famous ImageNet Challenge, for which CNN’s are the state-of-the-art, asks the trained model to categorize input into one of 1000 classes. Shouldn’t features that distinguish between categories like lions and wolves should also be useful for discriminating between cats and dogs?
+
+
+
+
+
+
+
+## 陌生单词
+
+
+
+tweak 调整
