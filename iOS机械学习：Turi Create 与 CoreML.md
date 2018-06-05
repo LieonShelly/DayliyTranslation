@@ -301,8 +301,6 @@ It downloaded some Resnet files. May you wonder? The reason is that it uses a te
 
 > **Learning high-level concepts about data** means that deep learning models take data, for instance raw pixel values of an image, and learns abstract ideas like ‘is animal’ or ‘is cat’ about that data
 > 
-> 
-> 
 > Conceptually, all this means is that you have a composition of simple non-linear functions, forming a complex non-linear function, which can map things as complex as raw pixel values to image category. This is what allows deep learning models to attain such amazing results.
 > 
 > It’s not uncommon for the task you want to solve to be related to something that has already been solved. Take, for example, the task of distinguishing cats from dogs. The famous ImageNet Challenge, for which CNN’s are the state-of-the-art, asks the trained model to categorize input into one of 1000 classes. Shouldn’t features that distinguish between categories like lions and wolves should also be useful for discriminating between cats and dogs?
